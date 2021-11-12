@@ -3,6 +3,7 @@ import fnmatch
 import json
 import os
 import re
+from tqdm.auto import tqdm
 
 #Oldie but goodie, should replace. We only run this thing once...
 try: 
@@ -86,7 +87,7 @@ def create_annotations(df, IMAGE_DIR, INFO, LICENSES, CATEGORIES):
         image_paths = filter_for_jpeg(root, files)
         num_of_image_files = len(image_paths)
 
-        for image_path in image_paths:
+        for image_path in tqdm(image_paths):
             image = Image.open(image_path)
             image_name = os.path.basename(image_path)
             image_info = pycococreatortools.create_image_info(
