@@ -6,12 +6,12 @@ import re
 from tqdm.auto import tqdm
 
 #Oldie but goodie, should replace. We only run this thing once...
-try: 
-    from pycococreatortools import pycococreatortools
-except ImportError:
-    import pip
-    print("Ignore warnings")
-    pip.main(['install','q','-U','git+git://github.com/waspinator/pycococreator.git@0.2.0', 'funcy'])
+# try:
+#     from pycococreatortools import pycococreatortools
+# except ImportError:
+#     import pip
+#     print("Ignore warnings")
+#     pip.main(['install','q','-U','git+git://github.com/waspinator/pycococreator.git@0.2.0', 'funcy'])
 
 import argparse
 import sys
@@ -132,7 +132,7 @@ def filter_annotations(annotations, images):
 def parse_args():
     parser = argparse.ArgumentParser(description='Create new annotations')
     parser.add_argument(
-        '--train_folder',
+        'such as this one ...',
         dest='train_folder',
         help='train data folder (/path/to/train)',
         default='/input/train_v2/',
