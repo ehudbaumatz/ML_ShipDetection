@@ -132,14 +132,14 @@ def filter_annotations(annotations, images):
 def parse_args():
     parser = argparse.ArgumentParser(description='Create new annotations')
     parser.add_argument(
-        'such as this one ...',
+        # 'such as this one ...',
         dest='train_folder',
         help='train data folder (/path/to/train)',
         default='/input/train_v2/',
         type=str
     )
     parser.add_argument(
-        '--test_folder',
+        # '--test_folder',
         dest='test_folder',
         help='test data folder (/path/to/test)',
         default="/input/test_v2/",
