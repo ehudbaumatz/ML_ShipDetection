@@ -3,15 +3,14 @@ import fnmatch
 import json
 import os
 import re
-from tqdm.auto import tqdm
 
 #Oldie but goodie, should replace. We only run this thing once...
-# try:
-#     from pycococreatortools import pycococreatortools
-# except ImportError:
-#     import pip
-#     print("Ignore warnings")
-#     pip.main(['install','q','-U','git+git://github.com/waspinator/pycococreator.git@0.2.0', 'funcy'])
+try: 
+    from pycococreatortools import pycococreatortools
+except ImportError:
+    import pip
+    print("Ignore warnings")
+    pip.main(['install','q','-U','git+git://github.com/waspinator/pycococreator.git@0.2.0', 'funcy'])
 
 import argparse
 import sys
@@ -52,7 +51,7 @@ def filter_for_jpeg(root, files):
     return files
 
 
-def save_bad_ann(IMAGE_DIR, image_name, mask, segmentation_id):
+def save_bad_ann(image_name, mask, segmentation_id):
     img = imread(os.path.join(IMAGE_DIR, image_name))
     fig, axarr = plt.subplots(1, 3)
     axarr[0].axis('off')
@@ -69,7 +68,7 @@ def save_bad_ann(IMAGE_DIR, image_name, mask, segmentation_id):
     plt.close()
 
 
-def create_annotations(df, IMAGE_DIR, INFO, LICENSES, CATEGORIES):
+def create_annotations():
     print("Started processing.")
 
     coco_output = {
@@ -87,7 +86,7 @@ def create_annotations(df, IMAGE_DIR, INFO, LICENSES, CATEGORIES):
         image_paths = filter_for_jpeg(root, files)
         num_of_image_files = len(image_paths)
 
-        for image_path in tqdm(image_paths):
+        for image_path in image_paths:
             image = Image.open(image_path)
             image_name = os.path.basename(image_path)
             image_info = pycococreatortools.create_image_info(
@@ -108,7 +107,7 @@ def create_annotations(df, IMAGE_DIR, INFO, LICENSES, CATEGORIES):
                 if annotation_info is not None:
                     coco_output["annotations"].append(annotation_info)
                 else:
-                    save_bad_ann(IMAGE_DIR, image_name, binary_mask, segmentation_id)
+                    save_bad_ann(image_name, binary_mask, segmentation_id)
 
                 segmentation_id = segmentation_id + 1
             if (image_id % 1000 == 0):
@@ -132,7 +131,7 @@ def filter_annotations(annotations, images):
 def parse_args():
     parser = argparse.ArgumentParser(description='Create new annotations')
     parser.add_argument(
-        'such as this one ...',
+        '--train_folder',
         dest='train_folder',
         help='train data folder (/path/to/train)',
         default='/input/train_v2/',
@@ -257,7 +256,7 @@ def main(args):
             },
         ]
 
-        test = create_annotations(df,IMAGE_DIR, INFO,LICENSES,CATEGORIES)
+        test = create_annotations()
 
         with open(PATH + ANNOTATIONS_JSON, 'w') as output_json_file:
             json.dump(test, output_json_file, indent=4)
