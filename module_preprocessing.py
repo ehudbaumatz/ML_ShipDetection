@@ -264,7 +264,7 @@ def main(args):
             
 
     # 2.
-    with open(ANNOTATIONS_JSON, 'rt', encoding='UTF-8') as annotations:
+    with open(ANNOTATIONS_JSON, 'rt') as annotations:
         print("Creating new train/test split")         
         coco = json.load(annotations)
         print("Loaded annotataions file:", ANNOTATIONS_JSON)
